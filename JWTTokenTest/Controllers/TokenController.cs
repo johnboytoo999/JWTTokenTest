@@ -1,28 +1,30 @@
 ﻿using JWTTokenTest.Helpers;
+using JWTTokenTest.Models;
+using JWTTokenTest.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace JWTTokenTest.Controllers
 {
+    [Authorize]
+    [ApiController]
     public class TokenController : ControllerBase
     {
         private readonly JwtHelpers jwt;
-
-        public TokenController(JwtHelpers jwt)
+        private readonly ITokenservice tokenservice;
+        public TokenController(JwtHelpers jwt, ITokenservice tokenservice)
         {
             this.jwt = jwt;
+            this.tokenservice = tokenservice;
         }
 
 
         [AllowAnonymous]
         [HttpPost("~/signin")]
-        public ActionResult<string> SignIn(LoginViewModel login)
+        public ActionResult<string> ValidUser(LoginViewModel login)
         {
-            if (ValidateUser(login))
+            if (tokenservice.ValidUser(login))
             {
                 return jwt.GenerateToken(login.Username);
             }
@@ -60,10 +62,6 @@ namespace JWTTokenTest.Controllers
         }
     }
 
-    public class LoginViewModel
-    {
-        public string Username { get; set; }
-        public string Password { get; set; }
-    }
+    
 }
 

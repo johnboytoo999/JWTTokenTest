@@ -1,5 +1,3 @@
-using System;
-
 namespace JWTTokenTest.Models
 {
     public class ErrorViewModel

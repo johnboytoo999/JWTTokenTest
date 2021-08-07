@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using JWTTokenTest.Controllers;
+using JWTTokenTest.Service;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -28,6 +30,7 @@ namespace JWTTokenTest
         {
             services.AddControllersWithViews();
             services.AddSingleton<Helpers.JwtHelpers>();
+            services.AddScoped<ITokenservice, TokenService>();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
             {
